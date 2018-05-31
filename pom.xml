@@ -98,11 +98,14 @@
 		        <version>2.3.0</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		
-	    <dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+		    	<groupId>org.projectlombok</groupId>
+        	        <artifactId>lombok</artifactId>
+        		<version>1.16.22</version>
+    			<scope>provided</scope>
+    		</dependency>
+
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
