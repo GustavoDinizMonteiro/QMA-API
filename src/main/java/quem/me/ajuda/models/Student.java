@@ -1,13 +1,14 @@
 package quem.me.ajuda.models;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,12 +20,8 @@ import lombok.Setter;
 @Getter @Setter
 @EqualsAndHashCode(of = {"registration"})
 @NoArgsConstructor
-public class Student implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Lombok in probably creating gets/sets for internal properties of string
+public class Student {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false, unique = true)
@@ -39,6 +36,7 @@ public class Student implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String email;
 	
+	@JsonIgnore
 	@Column(nullable = false)
 	private String password;
 
