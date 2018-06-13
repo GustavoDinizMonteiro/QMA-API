@@ -7,8 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,11 +37,7 @@ public class Student {
 	@Column(nullable = false, unique = true)
 	private String email;
 	
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(nullable = false)
 	private String password;
-
-	public Boolean authenticate(String password) {
-		return this.password.equals(password);
-	}
 }

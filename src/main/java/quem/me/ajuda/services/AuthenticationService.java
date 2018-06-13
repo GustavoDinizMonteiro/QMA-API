@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class AuthenticationService {
     public Optional<Student> authenticate(UserCredentials credentials) {
         Optional<Student> user = studentService.getByRegistration(credentials.getRegistration());
 
-        if (user.isPresent() && user.get().authenticate(credentials.getPassword())) {
+        if (user.isPresent() && BCrypt.checkpw(credentials.getPassword(), user.get().getPassword())) {
             return user;
         }
 
