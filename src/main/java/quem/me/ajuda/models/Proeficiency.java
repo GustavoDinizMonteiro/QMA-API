@@ -1,51 +1,43 @@
 package quem.me.ajuda.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "students")
 @Getter @Setter
-@EqualsAndHashCode(of = {"registration"})
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Lombok in probably creating gets/sets for internal properties of string
-public class Student {
+public class Proeficiency {
 	@Id
+	@JsonProperty(access = Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false, unique = true)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
-	private String registration;
-	
 	@Column(nullable = false)
-	private String phone;
+	private String discipline;
 	
-	@Column(nullable = false, unique = true)
-	private String email;
-	
-	@JsonProperty(access = Access.WRITE_ONLY)
+	@Max(value = 5)
+	@Min(value = 1)
 	@Column(nullable = false)
-	private String password;
+	private Integer level;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "tutor_info_id")
 	private TutorInfo tutorInfo;
 }
