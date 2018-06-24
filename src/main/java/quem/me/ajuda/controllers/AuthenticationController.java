@@ -1,6 +1,7 @@
 package quem.me.ajuda.controllers;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +24,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public AuthenticatedUser login(@RequestBody UserCredentials credentials, HttpServletResponse response) throws FailedAuthenticationException {
+    public AuthenticatedUser login(@Valid @RequestBody UserCredentials credentials, HttpServletResponse response) throws FailedAuthenticationException {
         return authenticationService.authenticate(credentials)
                 .map(user -> {
                     String token;
