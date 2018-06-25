@@ -5,9 +5,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import quem.me.ajuda.exceptions.FailedAuthenticationException;
@@ -17,13 +17,13 @@ import quem.me.ajuda.services.AuthenticationService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "auth/login")
+@RequestMapping(path = "login")
 public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public AuthenticatedUser login(@Valid @RequestBody UserCredentials credentials, HttpServletResponse response) throws FailedAuthenticationException {
         return authenticationService.authenticate(credentials)
                 .map(user -> {
