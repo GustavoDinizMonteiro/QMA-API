@@ -17,15 +17,13 @@ public class StudentService {
 	@Autowired
 	private StudentRepository repository;
 	
-	private final Integer gemSalt = 4;
-	
 	public Student create(Student student) {
-		student.setPassword(BCrypt.hashpw(student.toString(), BCrypt.gensalt(gemSalt)));
+		student.setPassword(BCrypt.hashpw(student.getPassword(), BCrypt.gensalt()));
 		return this.repository.save(student);
 	}
 	
-	public Boolean update(Student student) {
-		if(this.repository.existsById(student.getId())) {
+	public Boolean update(Long id, Student student) {
+		if(this.repository.existsById(id)) {
 			this.repository.save(student);
 			return true;
 		}

@@ -16,7 +16,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import quem.me.ajuda.exceptions.FailedAuthenticationException;
 import quem.me.ajuda.exceptions.UserNotFoundException;
 import quem.me.ajuda.models.Student;
 import quem.me.ajuda.security.model.UserCredentials;
@@ -33,11 +32,10 @@ public class AuthenticationService {
     public Optional<Student> authenticate(UserCredentials credentials) {
         Optional<Student> user = studentService.getByRegistration(credentials.getRegistration());
 
-        if (user.isPresent() && BCrypt.checkpw(credentials.getPassword(), user.get().getPassword())) {
+        if (user.isPresent() && BCrypt.checkpw(credentials.getPassword(), user.get().getPassword()))
             return user;
-        }
 
-        throw new FailedAuthenticationException();
+        return null;
     }
 
     public String tokenFor(Student user) throws IOException, URISyntaxException {
