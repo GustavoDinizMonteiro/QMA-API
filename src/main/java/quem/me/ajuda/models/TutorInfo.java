@@ -1,5 +1,6 @@
 package quem.me.ajuda.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -40,11 +41,12 @@ public class TutorInfo {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="tutor_info_id", referencedColumnName="id")
-	private Set<Proeficiency> clusters;
+	private Set<Proeficiency> proeficiencies;
 	
 	public TutorInfo() {
 		this.cash = 0;
 		this.rating = 4;
+		this.proeficiencies = new HashSet<>();
 	}
 }
 	

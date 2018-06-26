@@ -7,4 +7,5 @@ import quem.me.ajuda.models.Proeficiency;
 
 @Repository
 public interface ProeficiencyRepository extends JpaRepository<Proeficiency, Long>{
+
 }

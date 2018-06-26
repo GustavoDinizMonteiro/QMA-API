@@ -1,12 +1,13 @@
 package quem.me.ajuda.controllers;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +24,17 @@ public class ProeficiencyController {
 	private ProeficiencyService service;
 
 	@PostMapping(value = "/{studentId}/proeficiency")
-	public void addProeficiency(@PathVariable Long studentId, @RequestBody Proeficiency proeficiency) {
-		this.service.save(studentId, proeficiency);
+	public ResponseEntity<Proeficiency> addProeficiency(@PathVariable Long studentId, @RequestBody Proeficiency proeficiency) {
+		return new ResponseEntity<>(this.service.addProeficiency(studentId, proeficiency), HttpStatus.CREATED);
 	}
 	
-	@GetMapping(value = "/{studentId}/proeficiency")
-	public  Collection<Proeficiency> addProeficiency(@PathVariable Long studentId) {
-		return this.service.getProeficienciesByStudent(studentId);
+	@PutMapping(value = "/{studentId}/proeficiency/{id}")
+	public ResponseEntity<Proeficiency> editProeficiency(@PathVariable Long id, @RequestBody Proeficiency proeficiency) {
+		return new ResponseEntity<>(this.service.editProeficiency(id, proeficiency), HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/{studentId}/proeficiency/{id}")
+	public ResponseEntity<Boolean> deleteProeficiency(@PathVariable Long id) {
+		return new ResponseEntity<>(this.service.deleteProeficiency(id), HttpStatus.OK);
 	}
 }

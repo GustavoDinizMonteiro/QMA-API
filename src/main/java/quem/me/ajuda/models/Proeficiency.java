@@ -10,9 +10,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,10 +19,10 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"discipline"})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Lombok in probably creating gets/sets for internal properties of string
 public class Proeficiency {
 	@Id
-	@JsonProperty(access = Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false, unique = true)
 	private Long id;
@@ -36,8 +35,4 @@ public class Proeficiency {
 	@Min(value = 1)
 	@Column(nullable = false)
 	private Integer level;
-	
-
-	@Column(name = "tutor_info_id")
-	private Long tutorInfoId;
 }
