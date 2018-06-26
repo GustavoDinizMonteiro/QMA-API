@@ -1,10 +1,16 @@
 package quem.me.ajuda.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,6 +37,10 @@ public class TutorInfo {
 	@Column
 	@JsonProperty(access = Access.READ_ONLY)
 	private float rating;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="tutor_info_id", referencedColumnName="id")
+	private Set<Proeficiency> clusters;
 	
 	public TutorInfo() {
 		this.cash = 0;

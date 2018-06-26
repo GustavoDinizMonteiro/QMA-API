@@ -24,12 +24,13 @@ public class ProeficiencyService {
 	public void save(Long studentId, Proeficiency proeficiency) {
 		Student info = this.studentRepository.getOne(studentId);
 	
-			proeficiency.setTutorInfo(info.getTutorInfo());
+//			proeficiency.setTutorInfo(info.getTutorInfo());
 		this.proeficiencyRepository.save(proeficiency);
 	}
 	
 	public Collection<Proeficiency> getProeficienciesByStudent(Long studentId) {
-		return this.proeficiencyRepository.findByTutorInfo(studentId);
+//		return this.proeficiencyRepository.findByTutorInfo(studentId);
+		return null;
 	}
 
 }
