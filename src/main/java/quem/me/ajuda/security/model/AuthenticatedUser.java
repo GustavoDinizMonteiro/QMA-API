@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import quem.me.ajuda.models.Student;
 
 @JsonInclude(Include.NON_NULL)
@@ -17,7 +19,7 @@ public class AuthenticatedUser implements Authentication {
 
 	private static final long serialVersionUID = 1L;
 	private String token;
-	private Student user;
+	@Getter @Setter private Student user;
 	
 	public AuthenticatedUser(Student user) {
 		this.user = user;
@@ -49,7 +51,6 @@ public class AuthenticatedUser implements Authentication {
 	
 	@Override
 	public Object getPrincipal() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -59,7 +60,5 @@ public class AuthenticatedUser implements Authentication {
 	}
 	
 	@Override
-	public void setAuthenticated(boolean arg0) throws IllegalArgumentException {
-		
-	}
+	public void setAuthenticated(boolean arg0) throws IllegalArgumentException {}
 }
