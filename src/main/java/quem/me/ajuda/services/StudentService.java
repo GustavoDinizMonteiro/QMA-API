@@ -1,52 +1,63 @@
 package quem.me.ajuda.services;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import quem.me.ajuda.exceptions.UserNotFoundException;
+import quem.me.ajuda.models.MinimalStudent;
 import quem.me.ajuda.models.Student;
 import quem.me.ajuda.repositories.StudentRepository;
 
 @Service
-@Transactional
 public class StudentService {
 	@Autowired
 	private StudentRepository repository;
 	
+	@Transactional
 	public Student create(Student student) {
 		student.setPassword(BCrypt.hashpw(student.getPassword(), BCrypt.gensalt()));
 		return this.repository.save(student);
 	}
 	
-	public Boolean update(Long id, Student student) {
-		if(this.repository.existsById(id)) {
-			this.repository.save(student);
-			return true;
-		}
-		return false;
+	@Transactional
+	public Student update(Long id, Student student) {
+		if(this.exists(id))
+			return this.repository.save(student);
+		throw new UserNotFoundException();
 	}
 	
-	public Collection<Student> getAll() {
-		return this.repository.findAll();
+	public List<MinimalStudent> getAll() {
+		return this.repository.findAll().stream()
+				.map(student -> new MinimalStudent(student))
+				.collect(Collectors.toList());
 	}
 	
-	public Optional<Student> getById(Long id) {
-		return Optional.ofNullable(this.repository.getOne(id));
+	public Student getById(Long id) {
+		return this.repository.findById(id)
+			.map(user -> user)
+			.orElseThrow(() -> new UserNotFoundException());
 	}
 	
-	public Boolean delete(Long id) {
-		if(this.repository.existsById(id)) {
-			this.repository.deleteById(id);
-			return true;
-		}
-		return false;
+	@Transactional
+	public void delete(Long id) {
+		if(!this.exists(id)) 
+			throw new UserNotFoundException();
+		
+		this.repository.deleteById(id);
 	}
 	
-	public Optional<Student> getByRegistration(String registration) {
-		return this.repository.findByRegistration(registration);
+	public Student getByRegistration(String registration) {
+		return this.repository.findByRegistration(registration)
+				.map(user -> user)
+				.orElseThrow(() -> new UserNotFoundException());
+	}
+	
+	private Boolean exists(Long id) {
+		return this.repository.findById(id).isPresent();
 	}
 }

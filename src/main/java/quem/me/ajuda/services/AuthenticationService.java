@@ -1,11 +1,8 @@
 package quem.me.ajuda.services;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,7 +13,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import quem.me.ajuda.exceptions.FailedAuthenticationException;
-import quem.me.ajuda.exceptions.UserNotFoundException;
 import quem.me.ajuda.models.Student;
 import quem.me.ajuda.security.model.UserCredentials;
 
@@ -29,14 +25,12 @@ public class AuthenticationService {
     private StudentService studentService;
 
     public Student authenticate(UserCredentials credentials) {
-        Optional<Student> students = studentService.getByRegistration(credentials.getRegistration());
+        Student user = studentService.getByRegistration(credentials.getRegistration());
         
-        return students.map(user -> {
-        	if (BCrypt.checkpw(credentials.getPassword(), user.getPassword()))
-        		return user;
-
-        	throw new FailedAuthenticationException();
-        }).orElseThrow(() -> new UserNotFoundException());
+        if (BCrypt.checkpw(credentials.getPassword(), user.getPassword()))
+        	return user;
+        
+        throw new FailedAuthenticationException();
     }
 
     public String tokenFor(Student user) {
@@ -49,13 +43,9 @@ public class AuthenticationService {
                 .compact();
     }
 
-    public Student getUserFromToken(String token) throws IOException, URISyntaxException {
+    public Student getUserFromToken(String token) {
          Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-         Optional<Student> user = studentService.getByRegistration(claims.getBody().getSubject().toString());
-         
-         return user
-        		 .map(student -> student)
-        		 .orElseThrow(() -> new UserNotFoundException());
+         return  studentService.getByRegistration(claims.getBody().getSubject().toString());
     }
 
 }

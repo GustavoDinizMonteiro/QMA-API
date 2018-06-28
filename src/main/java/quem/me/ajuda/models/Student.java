@@ -36,6 +36,9 @@ public class Student {
 	private String registration;
 	
 	@Column(nullable = false)
+	private String name;
+	
+	@Column(nullable = false)
 	private String phone;
 	
 	@Column(nullable = false, unique = true)
