@@ -47,6 +47,6 @@ public class StudentService {
 	}
 	
 	public Optional<Student> getByRegistration(String registration) {
-		return Optional.ofNullable(this.repository.findByRegistration(registration));
+		return this.repository.findByRegistration(registration);
 	}
 }

@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -39,6 +40,10 @@ public class TutorInfo {
 	@JsonProperty(access = Access.READ_ONLY)
 	private float rating;
 	
+	@Column
+	@JsonIgnore
+	private Integer ratingCount;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="tutor_info_id", referencedColumnName="id")
 	private Set<Proeficiency> proeficiencies;
@@ -46,6 +51,7 @@ public class TutorInfo {
 	public TutorInfo() {
 		this.cash = 0;
 		this.rating = 4;
+		this.ratingCount = 0;
 		this.proeficiencies = new HashSet<>();
 	}
 }

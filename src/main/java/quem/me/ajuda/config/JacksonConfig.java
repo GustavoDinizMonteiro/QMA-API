@@ -13,7 +13,6 @@ public class JacksonConfig {
     @Bean
     @Primary
     public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        return objectMapper;
+        return builder.createXmlMapper(false).build();
     }
 }

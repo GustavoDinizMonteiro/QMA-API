@@ -1,44 +1,35 @@
 package quem.me.ajuda.controllers;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import quem.me.ajuda.exceptions.FailedAuthenticationException;
+import quem.me.ajuda.constants.Endpoints;
+import quem.me.ajuda.models.Student;
 import quem.me.ajuda.security.model.AuthenticatedUser;
 import quem.me.ajuda.security.model.UserCredentials;
 import quem.me.ajuda.services.AuthenticationService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "login")
+@RequestMapping(path = Endpoints.LOGIN_ENDPOINT)
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationService service;
 
     @PostMapping
-    public AuthenticatedUser login(@Valid @RequestBody UserCredentials credentials, HttpServletResponse response) throws FailedAuthenticationException {
-        return authenticationService.authenticate(credentials)
-                .map(user -> {
-                    String token;
+    public ResponseEntity<AuthenticatedUser> login(@Valid @RequestBody UserCredentials credentials) {
+    	
+        Student user = service.authenticate(credentials);
+        String token = this.service.tokenFor(user);
 
-                    try {
-                        token = authenticationService.tokenFor(user);
-                        response.setHeader("Authorization", token);
-
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    return new AuthenticatedUser(token, user);
-                })
-                .orElseThrow(() -> new FailedAuthenticationException(credentials.getRegistration()));
+        return ResponseEntity.ok(new AuthenticatedUser(token, user));
     }
 }
