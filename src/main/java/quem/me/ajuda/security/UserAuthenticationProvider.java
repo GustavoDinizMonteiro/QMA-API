@@ -1,7 +1,5 @@
 package quem.me.ajuda.security;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -20,11 +18,11 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) {
         try {
-            Optional<Student> possibleProfile = authenticationService.getUserFromToken((String) authentication.getCredentials());
+            Student student = authenticationService.getUserFromToken((String) authentication.getCredentials());
             
-            return new AuthenticatedUser((String) authentication.getCredentials(), possibleProfile.get());
+            return new AuthenticatedUser((String) authentication.getCredentials(), student);
         } catch (Exception e) {
-            throw new FailedAuthenticationException("Authentication failed: " + e.getMessage());
+            throw new FailedAuthenticationException("Authentication failed: ".concat(e.getMessage()));
         }
     }
 

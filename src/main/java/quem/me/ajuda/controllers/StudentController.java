@@ -1,13 +1,13 @@
 package quem.me.ajuda.controllers;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import quem.me.ajuda.constants.Endpoints;
+import quem.me.ajuda.models.MinimalStudent;
 import quem.me.ajuda.models.Student;
 import quem.me.ajuda.services.StudentService;
 
@@ -35,37 +36,23 @@ public class StudentController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Boolean> update(@PathVariable Long id, @Valid @RequestBody Student student) {
-		Boolean successful = this.service.update(id, student);
-		
-		if (successful) 
-			return new ResponseEntity<>(HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Student> update(@PathVariable Long id, @Valid @RequestBody Student student) {
+		return ResponseEntity.ok(this.service.update(id, student));
 	}
 	
 	@GetMapping
-	public ResponseEntity<Collection<Student>> getAll() {
-		return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+	public ResponseEntity<List<MinimalStudent>> getAll() {
+		return ResponseEntity.ok(this.service.getAll());
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Student> getById(@PathVariable Long id) {
-		Optional<Student> student = this.service.getById(id);
-		
-		if (student.isPresent())
-			return new ResponseEntity<>(student.get(), HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return ResponseEntity.ok(this.service.getById(id));
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> delete(@PathVariable Long id) {
-		Boolean successful = this.service.delete(id);
-		
-		if (successful) 
-			return new ResponseEntity<>(HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public BodyBuilder delete(@PathVariable Long id) {
+		this.service.delete(id);
+		return ResponseEntity.ok();
 	}
 }

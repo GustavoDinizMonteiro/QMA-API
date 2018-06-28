@@ -1,7 +1,5 @@
 package quem.me.ajuda.services;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +16,10 @@ public class ProeficiencyService {
 	private ProeficiencyRepository proeficiencyRepository;
 	
 	public Proeficiency addProeficiency(Long studentId, Proeficiency proeficiency) {
-		 Optional<Student> student = this.userService.getById(studentId);
+		Student student = this.userService.getById(studentId);
 		proeficiency = this.proeficiencyRepository.save(proeficiency);
-		student.get().getTutorInfo().getProeficiencies().add(proeficiency);
-		this.userService.create(student.get());
+		student.getTutorInfo().getProeficiencies().add(proeficiency);
+		this.userService.create(student);
 		return proeficiency;
 	}
 
