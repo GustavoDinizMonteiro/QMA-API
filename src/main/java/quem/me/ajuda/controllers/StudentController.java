@@ -1,10 +1,12 @@
 package quem.me.ajuda.controllers;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -25,12 +27,13 @@ import quem.me.ajuda.services.StudentService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = Endpoints.STUDENT_ENDPONT)
+@RequestMapping(Endpoints.STUDENT_ENDPONT)
 public class StudentController {
 	@Autowired
 	private StudentService service;
 	
 	@PostMapping
+	@CacheEvict(value = Endpoints.STUDENT_ENDPONT, allEntries = true)
 	public ResponseEntity<Student> create(@Valid @RequestBody Student student) {
 		return new ResponseEntity<>(this.service.create(student), HttpStatus.CREATED);
 	}
@@ -41,8 +44,9 @@ public class StudentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<MinimalStudent>> getAll() {
-		return ResponseEntity.ok(this.service.getAll());
+	@Cacheable(Endpoints.STUDENT_ENDPONT)
+	public Collection<MinimalStudent> getAll() {
+		return this.service.getAll();
 	}
 	
 	@GetMapping(value = "/{id}")
