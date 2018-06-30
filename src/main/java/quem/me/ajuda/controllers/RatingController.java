@@ -30,12 +30,12 @@ public class RatingController {
 	
 	@PostMapping
 	public ResponseEntity<Rating> create(@Valid @RequestBody Rating rating) {
-		return new ResponseEntity<>(this.service.create(rating), HttpStatus.CREATED);
+		return ResponseEntity.ok(this.service.create(rating));
 	}
 	
 	@GetMapping
-	public ResponseEntity<Collection<Rating>> getAll() {
-		return ResponseEntity.ok(this.service.getAll());
+	public Collection<Rating> getAll() {
+		return this.service.getAll();
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -49,7 +49,7 @@ public class RatingController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Rating> delete(@PathVariable Long id) {
+	public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
 		this.service.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

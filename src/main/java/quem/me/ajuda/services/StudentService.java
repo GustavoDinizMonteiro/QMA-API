@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import quem.me.ajuda.exceptions.IncompatibleUserIDAndTokenException;
 import quem.me.ajuda.exceptions.UserNotFoundException;
 import quem.me.ajuda.models.MinimalStudent;
 import quem.me.ajuda.models.Student;
@@ -18,6 +19,9 @@ public class StudentService {
 	@Autowired
 	private StudentRepository repository;
 	
+	@Autowired
+	private AuthenticationService authService;
+	
 	@Transactional
 	public Student create(Student student) {
 		student.setPassword(BCrypt.hashpw(student.getPassword(), BCrypt.gensalt()));
@@ -25,10 +29,10 @@ public class StudentService {
 	}
 	
 	@Transactional
-	public Student update(Long id, Student student) {
-		if(this.exists(id))
-			return this.repository.save(student);
-		throw new UserNotFoundException();
+	public Student update(Long id, Student student, String token) {
+		this.checkPermission(id, token);
+		
+		return this.repository.save(student);
 	}
 	
 	public List<MinimalStudent> getAll() {
@@ -37,16 +41,15 @@ public class StudentService {
 				.collect(Collectors.toList());
 	}
 	
-	public Student getById(Long id) {
-		return this.repository.findById(id)
-			.map(user -> user)
-			.orElseThrow(() -> new UserNotFoundException());
+	
+	public Student getByIdWithCheck(Long id, String token) {
+		this.checkPermission(id, token);
+		return this.getById(id);
 	}
 	
 	@Transactional
-	public void delete(Long id) {
-		if(!this.exists(id)) 
-			throw new UserNotFoundException();
+	public void delete(Long id, String token) {
+		this.checkPermission(id, token);
 		
 		this.repository.deleteById(id);
 	}
@@ -56,8 +59,18 @@ public class StudentService {
 				.map(user -> user)
 				.orElseThrow(() -> new UserNotFoundException());
 	}
+
+	public Student getById(Long id) {
+		return this.repository.findById(id)
+				.map(user -> user)
+				.orElseThrow(() -> new UserNotFoundException());
+	}
 	
-	private Boolean exists(Long id) {
-		return this.repository.findById(id).isPresent();
+	private void checkPermission(Long id, String token) {
+		Student idStudent = this.getById(id);
+		Student tokenStudent = this.authService.getUserFromToken(token);
+
+		if (!idStudent.equals(tokenStudent))
+			throw new IncompatibleUserIDAndTokenException();
 	}
 }

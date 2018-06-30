@@ -26,7 +26,6 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity<AuthenticatedUser> login(@Valid @RequestBody UserCredentials credentials) {
-    	
         Student user = service.authenticate(credentials);
         String token = this.service.tokenFor(user);
 
