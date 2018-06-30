@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +36,8 @@ public class RatingController {
 	}
 	
 	@GetMapping
-	public Collection<Rating> getAll() {
-		return this.service.getAll();
+	public Collection<Rating> getAll(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+		return this.service.getAll(token);
 	}
 	
 	@GetMapping(value = "/{id}")
@@ -44,7 +46,9 @@ public class RatingController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Boolean> edit(@PathVariable Long id, @Valid @RequestBody Rating rating) {
+	public ResponseEntity<Boolean> edit(
+			@PathVariable Long id, 
+			@Valid @RequestBody Rating rating) {
 		return ResponseEntity.ok(this.service.edit(id, rating));
 	}
 	
