@@ -12,13 +12,16 @@ import quem.me.ajuda.repositories.RatingRepository;
 public class RatingService {
 	@Autowired
 	private RatingRepository repository;
+	
+	@Autowired
+	private AuthenticationService authService;
 
 	public Rating create(Rating rating) {
 		return this.repository.save(rating);
 	}
 
-	public Collection<Rating> getAll() {
-		return this.repository.findAll();
+	public Collection<Rating> getAll(String token) {
+		return this.repository.findByStudent(this.authService.getUserFromToken(token).getId());
 	}
 
 	public Rating getById(Long id) {
