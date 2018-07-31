@@ -18,7 +18,7 @@ import quem.me.ajuda.services.AuthenticationService;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = Endpoints.LOGIN_ENDPOINT)
+@RequestMapping(Endpoints.LOGIN_ENDPOINT)
 public class AuthenticationController {
 
     @Autowired
