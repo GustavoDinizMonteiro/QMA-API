@@ -53,4 +53,12 @@ public class Student {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "tutor_info_id")
 	private TutorInfo tutorInfo;
+
+	public Student(String registration, String name, String phone, String email, String password) {
+		this.registration = registration;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.password = password;
+	}
 }
