@@ -3,10 +3,11 @@
  */
 package quem.me.ajuda.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import quem.me.ajuda.constants.Endpoints;
+import quem.me.ajuda.exceptions.FailedAuthenticationException;
 import quem.me.ajuda.models.Student;
 import quem.me.ajuda.security.model.UserCredentials;
 import quem.me.ajuda.services.AuthenticationService;
@@ -73,7 +75,7 @@ class AuthenticationControllerTest {
 	@Test
 	void testLoginSucessfully() throws Exception {
 		when(authService.authenticate(testCredentials))
-			.thenReturn(eq(testUser));
+			.thenReturn(testUser);
 		when(authService.tokenFor(testUser))
 			.thenReturn(anyString());
 		
@@ -82,6 +84,19 @@ class AuthenticationControllerTest {
 				.characterEncoding("UTF-8")
 				.content(objectMapper.writeValueAsString(testCredentials)))
 				.andExpect(status().isOk());
+	}
+	
+	@Test
+	void testLoginSucessFailed() throws Exception {
+		when(authService.authenticate(any()))
+			.thenThrow(FailedAuthenticationException.class);
+		
+		mockMvc.perform(post(ENDPOINT)
+				.contentType(MediaType.APPLICATION_JSON)
+				.characterEncoding("UTF-8")
+				.content(objectMapper.writeValueAsString(testCredentials)))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 
 }
