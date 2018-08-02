@@ -21,7 +21,7 @@ public class RatingService {
 	}
 
 	public Collection<Rating> getAll(String token) {
-		return this.repository.findByStudent(this.authService.getUserFromToken(token).getId());
+		return this.repository.findByStudentId(this.authService.getUserFromToken(token).getId());
 	}
 
 	public Rating getById(Long id) {

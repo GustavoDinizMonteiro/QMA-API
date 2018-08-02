@@ -9,5 +9,5 @@ import quem.me.ajuda.models.Rating;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
-	Collection<Rating> findByStudent(Long userid);
+	Collection<Rating> findByStudentId(Long userid);
 }
