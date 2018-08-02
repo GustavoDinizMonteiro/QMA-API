@@ -9,8 +9,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +18,6 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"discipline"})
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Lombok in probably creating gets/sets for internal properties of string
 public class Proeficiency {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
