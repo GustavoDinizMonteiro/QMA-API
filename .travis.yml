@@ -7,3 +7,11 @@ cache:
   directories:
     - .autoconf
     - $HOME/.m2
+
+services:
+  - postgresql
+
+
+before_script:
+  - psql -c "create user meajuda with password 'meajuda';" -U postgres
+  - psql -c 'create database meajuda;' -U postgres
