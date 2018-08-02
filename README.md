@@ -14,7 +14,7 @@ This is the default API application for the QMA platform. It is a RESTfull API w
 
 Travis
 
-Not Yet
+[![Build Status](https://travis-ci.org/GustavoDinizMonteiro/QMA-API.svg?branch=master)](https://travis-ci.org/GustavoDinizMonteiro/QMA-API)
 
 ## API Documentation
 
