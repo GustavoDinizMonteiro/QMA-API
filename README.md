@@ -54,6 +54,10 @@ Travis
         at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentImpl.<init>(JdbcEnvironmentImpl.java:271) [hibernate-core-5.2.17.Final.jar:5.2.17.Final]
    ```
 
+   Note: If you try to get GraphQL Schema ou try to access GraphiQL you must have an authorization token in your local storage. This may be inconvenient, but the graph-tool provided in `spring-boot-start-*` does not yet have the functionality to automatically generate authentication, but there is already a published issue for this:
+   
+   https://github.com/graphql-java/graphql-spring-boot/issues/106
+
 ## Running maven tasks
 
 

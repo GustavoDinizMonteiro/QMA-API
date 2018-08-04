@@ -15,32 +15,33 @@ import quem.me.ajuda.security.jwt.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserAuthenticationProvider authProvider;
+	@Autowired
+	private UserAuthenticationProvider authProvider;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthEndPoint;
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthEndPoint;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
 
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/students").permitAll()
-                .antMatchers(HttpMethod.GET, "/students").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthEndPoint);
-    }
+		http.authorizeRequests()
+			.antMatchers("/actuator/**").permitAll()
+			.antMatchers("/graphiql").permitAll()
+			.antMatchers(HttpMethod.POST, "/login").permitAll()
+			.antMatchers(HttpMethod.POST, "/students").permitAll()
+			.antMatchers(HttpMethod.GET, "/students").permitAll()
+			.antMatchers(HttpMethod.OPTIONS, "**").permitAll()
+			.anyRequest()
+				.authenticated().and()
+					.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+					.exceptionHandling().authenticationEntryPoint(jwtAuthEndPoint);
+	}
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider);
-        
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(authProvider);
+
+	}
 
 }

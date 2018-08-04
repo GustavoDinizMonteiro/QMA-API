@@ -1,0 +1,8 @@
+type Student {
+	id: ID!
+	registration: String!
+    name: String!
+    phone: String!
+    email: String!
+    password: String!
+}
