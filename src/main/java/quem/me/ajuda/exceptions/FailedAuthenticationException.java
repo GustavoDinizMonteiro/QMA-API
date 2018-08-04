@@ -6,13 +6,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class FailedAuthenticationException extends AuthenticationException {
+	private static final String MESSAGE_WIRH_COMPLEMENT = "Bad credentials: ";
+	private static final String MESSAGE = "Bad credentials.";
 	private static final long serialVersionUID = 1L;
 
 	public FailedAuthenticationException() {
-		super("Bad credentials.");
+		super(MESSAGE);
 	}
 	
 	public FailedAuthenticationException(String message) {
-		super(message);
+		super(MESSAGE_WIRH_COMPLEMENT.concat(message));
 	}
 }

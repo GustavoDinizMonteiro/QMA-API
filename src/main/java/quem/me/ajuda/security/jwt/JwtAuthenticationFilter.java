@@ -15,12 +15,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import quem.me.ajuda.security.model.AuthenticatedUser;
 
 public class JwtAuthenticationFilter implements Filter {
+    private static final String AUTH_HEADER = "Authorization";
 
-
-    @Override
+	@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     	HttpServletRequest servletRequest = (HttpServletRequest) request;
-        String authorization = servletRequest.getHeader("Authorization");
+        String authorization = servletRequest.getHeader(AUTH_HEADER);
         if (authorization != null) {
             AuthenticatedUser user = new AuthenticatedUser(authorization);
             SecurityContextHolder.getContext().setAuthentication(user);

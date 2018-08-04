@@ -36,8 +36,8 @@ public class RatingController {
 	}
 	
 	@GetMapping
-	public Collection<Rating> getAll(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-		return this.service.getAll(token);
+	public ResponseEntity<Collection<Rating>> getAll(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+		return ResponseEntity.ok(this.service.getAll(token));
 	}
 	
 	@GetMapping(value = "/{id}")

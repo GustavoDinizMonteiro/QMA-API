@@ -30,11 +30,11 @@ public class ProeficiencyController {
 	
 	@PutMapping(value = "/{studentId}/proeficiency/{id}")
 	public ResponseEntity<Proeficiency> editProeficiency(@PathVariable Long id, @RequestBody Proeficiency proeficiency) {
-		return new ResponseEntity<>(this.service.editProeficiency(id, proeficiency), HttpStatus.OK);
+		return ResponseEntity.ok(this.service.editProeficiency(id, proeficiency));
 	}
 	
 	@DeleteMapping(value = "/{studentId}/proeficiency/{id}")
 	public ResponseEntity<Boolean> deleteProeficiency(@PathVariable Long id) {
-		return new ResponseEntity<>(this.service.deleteProeficiency(id), HttpStatus.OK);
+		return ResponseEntity.ok(this.service.deleteProeficiency(id));
 	}
 }
