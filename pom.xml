@@ -136,7 +136,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.19.1</version><!--$NO-MVN-MAN-VER$ -->
 				<dependencies>
 					<dependency>
 						<groupId>org.junit.platform</groupId>
@@ -147,6 +147,49 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+	
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Spring Boot Maven Plugin -->
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<arguments>
+								<argument>--spring.profiles.active=dev</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>prod</id>
+			<build>
+				<plugins>
+					<!-- Spring Boot Maven Plugin -->
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<arguments>
+								<argument>--spring.profiles.active=prod</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+	</profiles>
 
 
 </project>

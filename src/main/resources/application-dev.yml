@@ -1,0 +1,15 @@
+spring:
+    profiles:
+        active: dev
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+    datasource:
+        url: jdbc:postgresql://localhost:5432/meajuda
+        username: meajuda
+        password: meajuda 
+    cache:
+        type: redis
+    redis:
+        host: 127.0.0.1
+        port: 6379
