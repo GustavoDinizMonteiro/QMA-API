@@ -63,24 +63,38 @@ Travis
 
 ### Build
 
-Build the code for production deployment.
+For production you need to provide to enviroment variables:
 
-not yet
+* `DATABASE_URL`: Url for ProstgreSQL Database
+* `REDIS_URL`: Url for Redis chache
 
-### Create a build and run
+With this you need just run the following commands:
+
+* `mvn install`
+
+* `java -jar target/*.jar --spring.profiles.active=prod`
+
+and the aplication will start in port 8080. Opitionaly you can use a specific port:
+
+* `java -jar target/*.jar --spring.profiles.active=prod --server.port=$PORT`
+
+### Other alternative ways to generate a build.
 
 not yet
 
 
 ## Running the tests
 
-not yet
+You just need to run the following command:
+
+`mvn test`
+
 
 ## Getting Started doc
 
-not yet
+Swagger documentation: https://qma-api.herokuapp.com/swagger-ui.html
 
 
 ## Contribution guidelines
 
-Please read the <a href="">not yet</a>  
+Not yet
